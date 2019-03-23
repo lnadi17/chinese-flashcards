@@ -1,7 +1,6 @@
 package com.chineseflashcards;
 
 import java.util.*;
-import javax.swing.JPanel;
 
 public class ChineseModel {
 	private ArrayList<ChineseView> views;
