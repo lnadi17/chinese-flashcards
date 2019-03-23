@@ -2,12 +2,9 @@ package com.chineseflashcards;
 import java.util.*;
 import javax.swing.*;
 
-public abstract class ChineseView extends JFrame {
+public abstract class ChineseView extends JPanel {
 	ChineseView() {
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//this.pack();
-		this.setSize(500, 500);
-		this.setVisible(true);
+		
 	}
 
 	// We still don't know what type of data we'll use
