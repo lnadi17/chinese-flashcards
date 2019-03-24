@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class ChineseDataView extends ChineseView {
 	// Global variables
-	JPanel centerPanel;
+	JPanel dataPanel;
 	JScrollPane scrollPane;
 
 	ChineseDataView() {
@@ -17,44 +17,22 @@ public class ChineseDataView extends ChineseView {
 
 	@Override
 	public void createView(Map<Integer, ArrayList<String>> data) {
-		// Convert data for table
-		Object[] columnArray = getColumnArray();
-		Object[][] tableData = getTableData(data);
 		// Create panel
-		centerPanel = new JPanel(new GridLayout());
+		dataPanel = new JPanel(new GridLayout());
 		// Create data view
-		JTable table = new JTable(tableData, columnArray);
+		JTable table = new JTable(new MyTableModel(data)); // Check if it needs to recreate table every time (TODO)
 		scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
 		// Add data view to panel
-		centerPanel.add(scrollPane);
+		dataPanel.add(scrollPane);
 		// Add panel on JFrame
-		add(centerPanel, BorderLayout.CENTER);
+		add(dataPanel, BorderLayout.CENTER);
 	}
 
 	@Override
 	public void clearView() {
-		if (centerPanel != null)
-			remove(centerPanel);
-	}
-
-	// Returns column names (to be changed!)
-	private Object[] getColumnArray() {
-		return new Object[] { "id", "georgian", "pinyuin", "mandarin" };
-	}
-
-	// Returns table data (to be changed!)
-	private Object[][] getTableData(Map<Integer, ArrayList<String>> data) {
-		Object[][] returnVal = new Object[data.size()][data.get(0).size()];
-		for (int k : data.keySet()) {
-			Object[] row = new Object[data.get(k).size() + 1];
-			row[0] = k;
-			row[1] = data.get(k).get(0);
-			row[2] = data.get(k).get(1);
-			row[3] = data.get(k).get(2);
-			returnVal[k] = row;
-		}
-		return returnVal;
+		if (dataPanel != null)
+			remove(dataPanel);
 	}
 
 	public void getData() {

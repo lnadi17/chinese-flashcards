@@ -13,7 +13,6 @@ public class ChineseController {
 		
 		// Add views to model
 		model.addView(dataView);
-		//view.add(dataView);
 		
 		// Add views on main view as separate tabs
 		view.addTab("Data", dataView);
