@@ -2,9 +2,14 @@ package com.chineseflashcards;
 
 import java.util.*;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 public class ChineseModel {
 	private ArrayList<ChineseView> views;
-	private Map<Integer, ArrayList<String>> data = new HashMap<Integer, ArrayList<String>>();
+	private JSONObject data = new JSONObject();
 
 	ChineseModel() {
 		views = new ArrayList<ChineseView>();
@@ -17,9 +22,10 @@ public class ChineseModel {
 		notifyViews();
 	}
 
-	public void addEntry(int id, ArrayList<String> arrayList) {
+	@SuppressWarnings("unchecked")
+	public void addEntry(int id, JSONArray array) {
 		// Add entry to data
-		data.put(id, arrayList);
+		data.put(Integer.toString(id), array);
 		notifyViews();
 	}
 
@@ -37,13 +43,22 @@ public class ChineseModel {
 	}
 
 	// We still don't know which data type we'll use
-	public Map<Integer, ArrayList<String>> getData() {
+	public JSONObject getData() {
 		return data;
 	}
 
 	private void loadData() {
-		// Read saved data from file or files and store it in some variable
-		ArrayList<String> oe = new ArrayList<String>(Arrays.asList("ჩინური ენა", "ha4nyu3", "汉语"));
-		data.put(0, oe);
+		JSONParser parser = new JSONParser();
+		String s = "{\"columnNames\":[\"id\",\"meaning\",\"pinyin\",\"mandarin\"],\"entries\":{\"0\":[\"ჩინური ენა\",\"ha4nyu3\",\"汉语\"],\"1\":[\"ლამაზი, კარგი შესახედი\",\"ha3oka4n\",\"好看\"],\"2\":[\"მეგობარი\",\"pe2ngyou\",\"朋友\"]}}";
+		try {
+			JSONObject mainObj = (JSONObject) parser.parse(s);
+			JSONArray columnArray = (JSONArray) mainObj.get("columnNames");
+			data = (JSONObject) mainObj.get("entries");
+			System.out.println(data.toString());
+
+		} catch (ParseException pe) {
+			System.out.println("position: " + pe.getPosition());
+			System.out.println(pe);
+		}
 	}
 }

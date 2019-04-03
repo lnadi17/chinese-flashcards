@@ -1,15 +1,19 @@
 package com.chineseflashcards;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import javax.swing.table.AbstractTableModel;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class MyTableModel extends AbstractTableModel {
 	private String[] columnNames;
 	private Object[][] data;
 
-	public MyTableModel(Map<Integer, ArrayList<String>> data) {
-		this.columnNames = new String[] { "id", "geo", "pin", "man" };
+	public MyTableModel(JSONObject data) {
+		this.columnNames = new String[] { "geo", "pin", "man" };
 		this.data = getTableData(data);
 	}
 
@@ -33,16 +37,20 @@ public class MyTableModel extends AbstractTableModel {
 	}
 
 	// Returns table data (to be changed!)
-	private Object[][] getTableData(Map<Integer, ArrayList<String>> data) {
-		Object[][] returnVal = new Object[data.size()][data.get(0).size()];
-		for (int k : data.keySet()) {
-			Object[] row = new Object[data.get(k).size() + 1];
-			row[0] = k;
-			row[1] = data.get(k).get(0);
-			row[2] = data.get(k).get(1);
-			row[3] = data.get(k).get(2);
-			returnVal[k] = row;
+	private Object[][] getTableData(JSONObject data) {
+		Object[][] res = new Object[data.size()][columnNames.length];
+		for (int i = 0; i < data.size(); i++) {
+			JSONArray jsonArray = (JSONArray) data.get(Integer.toString(i));
+			res[i] = getObjectArray(jsonArray);
 		}
-		return returnVal;
+		return res;
+	}
+	
+	private Object[] getObjectArray(JSONArray jsonArray) {
+		Object[] res = new Object[columnNames.length];
+		for (int i = 0; i < res.length; i++) { 
+			res[i] = (Object) jsonArray.get(i);
+		}
+		return res;
 	}
 }

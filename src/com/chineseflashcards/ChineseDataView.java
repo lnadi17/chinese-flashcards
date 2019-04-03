@@ -2,11 +2,16 @@ package com.chineseflashcards;
 
 import java.util.*;
 import javax.swing.*;
+
+import org.json.simple.JSONObject;
+
 import java.awt.*;
 
 public class ChineseDataView extends ChineseView {
 	// Global variables
 	JPanel dataPanel;
+	JPanel controlPanel;
+	
 	JScrollPane scrollPane;
 
 	ChineseDataView() {
@@ -16,15 +21,17 @@ public class ChineseDataView extends ChineseView {
 	}
 
 	@Override
-	public void createView(Map<Integer, ArrayList<String>> data) {
+	public void createView(JSONObject data) {
 		// Create panel
 		dataPanel = new JPanel(new GridLayout());
+		
 		// Create data view
 		JTable table = new JTable(new MyTableModel(data)); // Check if it needs to recreate table every time (TODO)
 		scrollPane = new JScrollPane(table);
-		table.setFillsViewportHeight(true);
+
 		// Add data view to panel
 		dataPanel.add(scrollPane);
+
 		// Add panel on JFrame
 		add(dataPanel, BorderLayout.CENTER);
 	}
