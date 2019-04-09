@@ -23,17 +23,19 @@ public class ChineseModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void addEntry(int id, JSONArray array) {
-		// Add entry to word data
-		JSONArray arr = (JSONArray) data.get("entries");
-		arr.add(id, array);
-		System.out.println(data.get("entries"));
+	// Add entry to data
+	public void addEntry(String[] array) {
+		JSONArray passedArray = arrayToJSONArray(array);
+		JSONArray dataArray = (JSONArray) data.get("entries");
+		// Adds converted passed array to data array
+		dataArray.add(getLastID() + 1, passedArray);
 		notifyViews();
 	}
 
+	// Not yet implemented
 	public void removeEntry(int id) {
 		// Remove entry from data
-		data.remove(id);
+
 		notifyViews();
 	}
 
@@ -44,7 +46,6 @@ public class ChineseModel {
 		}
 	}
 
-	// We still don't know which data type we'll use
 	public JSONObject getData() {
 		return data;
 	}
@@ -54,10 +55,24 @@ public class ChineseModel {
 		String s = "{\"columnNames\":[\"ID\",\"Meaning\",\"Pinyin\",\"Mandarin\"],\"entries\":[[\"ჩინური ენა\",\"ha4nyu3\",\"汉语\"],[\"ლამაზი, კარგი შესახედი\",\"ha3oka4n\",\"好看\"],[\"მეგობარი\",\"pe2ngyou\",\"朋友\"]]}";
 		try {
 			data = (JSONObject) parser.parse(s);
-			System.out.println(data.toString());
+			// System.out.println(data.toString());
 		} catch (ParseException pe) {
 			System.out.println("position: " + pe.getPosition());
 			System.out.println(pe);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private JSONArray arrayToJSONArray(String[] stringArray) {
+		JSONArray result = new JSONArray();
+		for (int i = 0; i < stringArray.length; i++) {
+			result.add(stringArray[i]);
+		}
+		return result;
+	}
+	
+	// Can be optimized
+	private int getLastID() {
+		return ((JSONArray) data.get("entries")).size() - 1;
 	}
 }
