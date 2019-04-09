@@ -2,6 +2,7 @@ package com.chineseflashcards;
 import java.util.*;
 import javax.swing.*;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public abstract class ChineseView extends JPanel {

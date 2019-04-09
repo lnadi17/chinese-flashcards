@@ -13,8 +13,8 @@ public class MyTableModel extends AbstractTableModel {
 	private Object[][] data;
 
 	public MyTableModel(JSONObject data) {
-		this.columnNames = new String[] { "geo", "pin", "man" };
-		this.data = getTableData(data);
+		this.columnNames = getColumnNameArray(data);
+		this.data = convertData(data);
 	}
 
 	@Override
@@ -36,21 +36,30 @@ public class MyTableModel extends AbstractTableModel {
 		return data[row][col];
 	}
 
-	// Returns table data (to be changed!)
-	private Object[][] getTableData(JSONObject data) {
-		Object[][] res = new Object[data.size()][columnNames.length];
-		for (int i = 0; i < data.size(); i++) {
-			JSONArray jsonArray = (JSONArray) data.get(Integer.toString(i));
-			res[i] = getObjectArray(jsonArray);
+	// Basically copies entries (2D JSONArray) to another array and returns it
+	private Object[][] convertData(JSONObject data) {
+		// Extract entries
+		JSONArray entries = (JSONArray) data.get("entries");
+		Object[][] res = new Object[entries.size()][columnNames.length];
+		
+		for (int i = 0; i < entries.size(); i++) {
+			Object[] row = new Object[columnNames.length];
+			row[0] = i;
+			for (int j = 1; j < row.length; j++) {
+				row[j] = ((JSONArray) entries.get(i)).get(j - 1);
+			}
+			res[i] = row;
 		}
 		return res;
 	}
-	
-	private Object[] getObjectArray(JSONArray jsonArray) {
-		Object[] res = new Object[columnNames.length];
-		for (int i = 0; i < res.length; i++) { 
-			res[i] = (Object) jsonArray.get(i);
+
+	private String[] getColumnNameArray(JSONObject data) {
+		// Extract column names
+		JSONArray jsonArray = (JSONArray) data.get("columnNames");
+		String[] returnVal = new String[jsonArray.size()];
+		for (int i = 0; i < returnVal.length; i++) {
+			returnVal[i] = (String) jsonArray.get(i);
 		}
-		return res;
+		return returnVal;
 	}
 }
