@@ -51,7 +51,7 @@ public class ChineseModel {
 
 	private void loadData() {
 		JSONParser parser = new JSONParser();
-		String s = "{\"columnNames\":[\"id\",\"meaning\",\"pinyin\",\"mandarin\"],\"entries\":[[\"ჩინური ენა\",\"ha4nyu3\",\"汉语\"],[\"ლამაზი, კარგი შესახედი\",\"ha3oka4n\",\"好看\"],[\"მეგობარი\",\"pe2ngyou\",\"朋友\"]]}";
+		String s = "{\"columnNames\":[\"ID\",\"Meaning\",\"Pinyin\",\"Mandarin\"],\"entries\":[[\"ჩინური ენა\",\"ha4nyu3\",\"汉语\"],[\"ლამაზი, კარგი შესახედი\",\"ha3oka4n\",\"好看\"],[\"მეგობარი\",\"pe2ngyou\",\"朋友\"]]}";
 		try {
 			data = (JSONObject) parser.parse(s);
 			System.out.println(data.toString());

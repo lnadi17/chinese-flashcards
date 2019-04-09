@@ -1,6 +1,8 @@
 package com.chineseflashcards;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class ChineseController {
+public class ChineseController implements ActionListener {
 	public ChineseMainView view;
 	public ChineseModel model;
 
@@ -14,7 +16,11 @@ public class ChineseController {
 		// Add views to model
 		model.addView(dataView);
 		
-		// Add views on main view as separate tabs
+		// Add views to main view as separate tabs
 		view.addTab("Data", dataView);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		
 	}
 }
