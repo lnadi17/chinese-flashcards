@@ -1,5 +1,13 @@
 package com.chineseflashcards;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 
 import org.json.simple.JSONArray;
@@ -8,6 +16,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class ChineseModel {
+	public static String RES_PATH = "res/";
 	private ArrayList<ChineseView> views;
 	private JSONObject data = new JSONObject();
 
@@ -52,10 +61,9 @@ public class ChineseModel {
 
 	private void loadData() {
 		JSONParser parser = new JSONParser();
-		String s = "{\"columnNames\":[\"ID\",\"Meaning\",\"Pinyin\",\"Mandarin\"],\"entries\":[[\"ჩინური ენა\",\"ha4nyu3\",\"汉语\"],[\"ლამაზი, კარგი შესახედი\",\"ha3oka4n\",\"好看\"],[\"მეგობარი\",\"pe2ngyou\",\"朋友\"]]}";
+		String s = readFromDataFile(RES_PATH + "data.json");
 		try {
 			data = (JSONObject) parser.parse(s);
-			// System.out.println(data.toString());
 		} catch (ParseException pe) {
 			System.out.println("position: " + pe.getPosition());
 			System.out.println(pe);
@@ -70,9 +78,44 @@ public class ChineseModel {
 		}
 		return result;
 	}
-	
+
 	// Can be optimized
 	private int getLastID() {
 		return ((JSONArray) data.get("entries")).size() - 1;
+	}
+
+	// You can always change an implementation, right?
+	private String readFromDataFile(String fileName) {
+		String result = null;
+
+		try {
+			FileInputStream fis = new FileInputStream(fileName);
+			DataInputStream dis = new DataInputStream(fis);
+			result = dis.readUTF();
+			dis.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Data file not found.");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Error reading from the data file.");
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	private void writeInDataFile(String fileName) {
+		try {
+			FileOutputStream fos = new FileOutputStream(fileName);
+			DataOutputStream dos = new DataOutputStream(fos);
+			dos.writeUTF(data.toString());
+			dos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

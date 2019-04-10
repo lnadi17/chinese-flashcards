@@ -29,8 +29,10 @@ public class ChineseController {
 
 	private class DataViewButtonsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			String[] data = dataView.getControlPanelData();
-			model.addEntry(data);
+			if (e.getActionCommand() == "Add") {
+				String[] data = dataView.getControlPanelData();
+				model.addEntry(data);
+			}
 		}
 	}
 }
