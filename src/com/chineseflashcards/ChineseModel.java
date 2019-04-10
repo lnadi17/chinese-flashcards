@@ -27,17 +27,16 @@ public class ChineseModel {
 
 	public void addView(ChineseView view) {
 		views.add(view);
-		// We don't if we should call that method from here yet
 		notifyViews();
 	}
 
 	@SuppressWarnings("unchecked")
 	// Add entry to data
-	public void addEntry(String[] array) {
+	public void addEntry(Object[] array, int id) {
 		JSONArray passedArray = arrayToJSONArray(array);
 		JSONArray dataArray = (JSONArray) data.get("entries");
 		// Adds converted passed array to data array
-		dataArray.add(getLastID() + 1, passedArray);
+		dataArray.add(id, passedArray);
 		saveDataToFile(RES_PATH + "data.json");
 		notifyViews();
 	}
@@ -72,7 +71,7 @@ public class ChineseModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	private JSONArray arrayToJSONArray(String[] stringArray) {
+	private JSONArray arrayToJSONArray(Object[] stringArray) {
 		JSONArray result = new JSONArray();
 		for (int i = 0; i < stringArray.length; i++) {
 			result.add(stringArray[i]);

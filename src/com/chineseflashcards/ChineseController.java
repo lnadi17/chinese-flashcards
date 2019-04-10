@@ -2,7 +2,9 @@ package com.chineseflashcards;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -15,15 +17,12 @@ public class ChineseController {
 	// Declare views
 	ChineseDataView dataView;
 
-	// Declare variables to track them later
-	int dataViewSelectedRow = -1;
-
 	public ChineseController(ChineseMainView view, ChineseModel model) {
 		this.view = view;
 		this.model = model;
 
 		// Initialize views
-		dataView = new ChineseDataView();
+		dataView = new ChineseDataView(model.getData());
 
 		// Add views to model
 		model.addView(dataView);
@@ -35,7 +34,6 @@ public class ChineseController {
 		dataView.addButtonListeners(new DataViewButtonsListener());
 
 		// Add table model listener for data view
-		// IT IS NOT NEEDED YET (BECAUSE TABLE IS NOT EDITABLE DIRECTLY)
 		dataView.addTableModelListener(new DataViewTableModelListener());
 
 		// Add selection listener to table in data view
@@ -44,38 +42,33 @@ public class ChineseController {
 
 	// Listens to Add, Remove and Edit buttons in data view
 	private class DataViewButtonsListener implements ActionListener {
+
+		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand() == "Add") {
-				String[] data = dataView.getControlPanelData();
-				model.addEntry(data);
-				
-			} else if (e.getActionCommand() == "Remove") {
-				if (dataViewSelectedRow < 0) {
-					InfoClass.infoBox("Please select row first.");
-				} else {
-					model.removeEntry(dataViewSelectedRow);
-					dataViewSelectedRow = -1;
-				}
-				
-			} else if (e.getActionCommand() == "Edit") {
-				
-			}
+			//System.out.println(e);
 		}
+
 	}
 
 	// Listens to table model in data view
 	private class DataViewTableModelListener implements TableModelListener {
+		@Override
 		public void tableChanged(TableModelEvent e) {
-			System.out.println(e);
+			MyTableModel changedModel = (MyTableModel) e.getSource();
+			int changedRow = e.getLastRow();
+			Object[] row = changedModel.getRow(changedRow);
+			String[] subRow = Arrays.copyOfRange(row, 1, row.length, String[].class);
+			model.removeEntry(changedRow);
+			model.addEntry(subRow, changedRow);
 		}
 	}
 
 	// Listens to table selections in data view
 	private class DataViewTableSelectionListener implements ListSelectionListener {
+		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			System.out.println(e);
 			if (e.getValueIsAdjusting() == false) {
-				dataViewSelectedRow = e.getLastIndex();
+				//System.out.println(e);
 			}
 		}
 	}

@@ -6,10 +6,15 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class MyTableModel extends AbstractTableModel {
+	// Reimplementing table data as an ArrayList would be better
 	private String[] columnNames;
 	private Object[][] data;
 
 	public MyTableModel(JSONObject data) {
+		update(data);
+	}
+	
+	public void update(JSONObject data) {
 		this.columnNames = getColumnNameArray(data);
 		this.data = convertData(data);
 	}
@@ -32,6 +37,23 @@ public class MyTableModel extends AbstractTableModel {
 	public Object getValueAt(int row, int col) {
 		return data[row][col];
 	}
+	
+	public Object[] getRow(int row) {
+		return data[row];
+	}
+	
+	public void setValueAt(Object value, int row, int col) {
+		data[row][col] = value;
+		fireTableCellUpdated(row, col);
+	}
+	
+    public boolean isCellEditable(int row, int col) {
+        if (col < 1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
 	// Basically copies entries (2D JSONArray) to another array and returns it
 	private Object[][] convertData(JSONObject data) {
