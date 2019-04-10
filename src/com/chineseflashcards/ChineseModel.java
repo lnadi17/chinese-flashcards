@@ -1,7 +1,5 @@
 package com.chineseflashcards;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -37,6 +35,16 @@ public class ChineseModel {
 		JSONArray dataArray = (JSONArray) data.get("entries");
 		// Adds converted passed array to data array
 		dataArray.add(id, passedArray);
+		saveDataToFile(RES_PATH + "data.json");
+		notifyViews();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void addEntry(Object[] array) {
+		JSONArray passedArray = arrayToJSONArray(array);
+		JSONArray dataArray = (JSONArray) data.get("entries");
+		// Adds converted passed array to data array
+		dataArray.add(getLastID() + 1, passedArray);
 		saveDataToFile(RES_PATH + "data.json");
 		notifyViews();
 	}
@@ -79,11 +87,6 @@ public class ChineseModel {
 		return result;
 	}
 
-	// Can be optimized
-	private int getLastID() {
-		return ((JSONArray) data.get("entries")).size() - 1;
-	}
-
 	// You can always change an implementation, right?
 	private String readFromDataFile(String fileName) {
 		String result = null;
@@ -117,5 +120,9 @@ public class ChineseModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private int getLastID() {
+		return ((JSONArray) data.get("entries")).size() - 1;
 	}
 }

@@ -4,7 +4,6 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -31,8 +30,6 @@ public class ChineseDataView extends ChineseView {
 		table = new JTable();
 		tableModel = new MyTableModel(data);
 		table.setModel(tableModel);
-
-		// User can select only one at a time, at this time
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		addButton = new JButton("Add");
@@ -72,10 +69,6 @@ public class ChineseDataView extends ChineseView {
 	public void clearView() {
 		removeAll();
 	}
-
-//	public String[] getControlPanelData() {
-//		return null;	
-//	}
 
 	public void addButtonListeners(ActionListener a) {
 		addButton.addActionListener(a);

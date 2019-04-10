@@ -72,6 +72,7 @@ public class MyTableModel extends AbstractTableModel {
 		return res;
 	}
 
+	// Helper m method for convertData()
 	private String[] getColumnNameArray(JSONObject data) {
 		// Extract column names
 		JSONArray jsonArray = (JSONArray) data.get("columnNames");
