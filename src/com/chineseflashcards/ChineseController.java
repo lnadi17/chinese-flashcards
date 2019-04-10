@@ -15,6 +15,9 @@ public class ChineseController {
 	// Declare views
 	ChineseDataView dataView;
 
+	// Declare variables to track them later
+	int dataViewSelectedRow = -1;
+
 	public ChineseController(ChineseMainView view, ChineseModel model) {
 		this.view = view;
 		this.model = model;
@@ -30,11 +33,11 @@ public class ChineseController {
 
 		// Add action listeners to dataView buttons
 		dataView.addButtonListeners(new DataViewButtonsListener());
-		
+
 		// Add table model listener for data view
 		// IT IS NOT NEEDED YET (BECAUSE TABLE IS NOT EDITABLE DIRECTLY)
 		dataView.addTableModelListener(new DataViewTableModelListener());
-		
+
 		// Add selection listener to table in data view
 		dataView.addSelectionListener(new DataViewTableSelectionListener());
 	}
@@ -45,23 +48,35 @@ public class ChineseController {
 			if (e.getActionCommand() == "Add") {
 				String[] data = dataView.getControlPanelData();
 				model.addEntry(data);
+				
 			} else if (e.getActionCommand() == "Remove") {
+				if (dataViewSelectedRow < 0) {
+					InfoClass.infoBox("Please select row first.");
+				} else {
+					model.removeEntry(dataViewSelectedRow);
+					dataViewSelectedRow = -1;
+				}
+				
+			} else if (e.getActionCommand() == "Edit") {
 				
 			}
 		}
 	}
-	
+
 	// Listens to table model in data view
 	private class DataViewTableModelListener implements TableModelListener {
 		public void tableChanged(TableModelEvent e) {
 			System.out.println(e);
 		}
 	}
-	
+
 	// Listens to table selections in data view
 	private class DataViewTableSelectionListener implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
 			System.out.println(e);
+			if (e.getValueIsAdjusting() == false) {
+				dataViewSelectedRow = e.getLastIndex();
+			}
 		}
 	}
 }

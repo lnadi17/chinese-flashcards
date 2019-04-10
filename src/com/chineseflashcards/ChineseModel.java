@@ -45,7 +45,7 @@ public class ChineseModel {
 	public void removeEntry(int id) {
 		// Remove entry from data
 		((JSONArray) data.get("entries")).remove(id);
-		//saveDataToFile(RES_PATH + "data.json");
+		saveDataToFile(RES_PATH + "data.json");
 		notifyViews();
 	}
 

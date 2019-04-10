@@ -115,6 +115,10 @@ public class ChineseDataView extends ChineseView {
 		cpData[0] = field1.getText();
 		cpData[1] = field2.getText();
 		cpData[2] = field3.getText();
+		// Clear fields here (despite that view shouldn't be doing that)
+		field1.setText("");
+		field2.setText("");
+		field3.setText("");
 		return cpData;
 	}
 
