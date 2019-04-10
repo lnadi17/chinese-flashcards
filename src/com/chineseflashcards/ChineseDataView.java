@@ -1,6 +1,9 @@
 package com.chineseflashcards;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelListener;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.awt.*;
@@ -11,6 +14,9 @@ public class ChineseDataView extends ChineseView {
 	JPanel dataPanel;
 	JPanel controlPanel;
 
+	JTable table;
+	MyTableModel tableModel;
+	
 	JTextField field1;
 	JTextField field2;
 	JTextField field3;
@@ -30,6 +36,11 @@ public class ChineseDataView extends ChineseView {
 		this.setLayout(new BorderLayout());
 		this.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
 
+		// Initialize table (only table model is going to change, not JTable itself)
+		table = new JTable();
+		// User can select only one at a time, at this time
+		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
 		// Initialize JTextFields and JButtons
 		field1 = new JTextField(20);
 		field2 = new JTextField(20);
@@ -42,11 +53,12 @@ public class ChineseDataView extends ChineseView {
 
 	@Override
 	public void createView(JSONObject data) {
-		// Create panel
+		// Create data panel
 		dataPanel = new JPanel(new GridLayout());
 
 		// Create data view
-		JTable table = new JTable(new MyTableModel(data));
+		tableModel = new MyTableModel(data);
+		table.setModel(tableModel);
 		scrollPane = new JScrollPane(table);
 
 		// Add data view to panel
@@ -110,5 +122,13 @@ public class ChineseDataView extends ChineseView {
 		addButton.addActionListener(a);
 		editButton.addActionListener(a);
 		removeButton.addActionListener(a);
+	}
+	
+	public void addTableModelListener(TableModelListener a) {
+		tableModel.addTableModelListener(a);
+	}
+		
+	public void addSelectionListener(ListSelectionListener a) {
+		table.getSelectionModel().addListSelectionListener(a);
 	}
 }

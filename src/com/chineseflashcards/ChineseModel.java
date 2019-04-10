@@ -38,13 +38,14 @@ public class ChineseModel {
 		JSONArray dataArray = (JSONArray) data.get("entries");
 		// Adds converted passed array to data array
 		dataArray.add(getLastID() + 1, passedArray);
+		saveDataToFile(RES_PATH + "data.json");
 		notifyViews();
 	}
 
-	// Not yet implemented
 	public void removeEntry(int id) {
 		// Remove entry from data
-
+		((JSONArray) data.get("entries")).remove(id);
+		//saveDataToFile(RES_PATH + "data.json");
 		notifyViews();
 	}
 
@@ -104,7 +105,7 @@ public class ChineseModel {
 		return result;
 	}
 
-	private void writeInDataFile(String fileName) {
+	private void saveDataToFile(String fileName) {
 		try {
 			FileOutputStream fos = new FileOutputStream(fileName);
 			DataOutputStream dos = new DataOutputStream(fos);
