@@ -31,6 +31,7 @@ public class ChineseDataView extends ChineseView {
 		tableModel = new MyTableModel(data);
 		table.setModel(tableModel);
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		table.getColumnModel().getColumn(0).setPreferredWidth(5);
 
 		addButton = new JButton("Add");
 		removeButton = new JButton("Remove");

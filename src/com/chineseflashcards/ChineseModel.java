@@ -35,24 +35,24 @@ public class ChineseModel {
 		JSONArray dataArray = (JSONArray) data.get("entries");
 		// Adds converted passed array to data array
 		dataArray.add(id, passedArray);
-		saveDataToFile(RES_PATH + "data.json");
+		saveDataToFile(RES_PATH + "data.json", data.toString());
 		notifyViews();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void addEntry(Object[] array) {
 		JSONArray passedArray = arrayToJSONArray(array);
 		JSONArray dataArray = (JSONArray) data.get("entries");
 		// Adds converted passed array to data array
 		dataArray.add(getLastID() + 1, passedArray);
-		saveDataToFile(RES_PATH + "data.json");
+		saveDataToFile(RES_PATH + "data.json", data.toString());
 		notifyViews();
 	}
-
+	
+	// Remove entry from data
 	public void removeEntry(int id) {
-		// Remove entry from data
 		((JSONArray) data.get("entries")).remove(id);
-		saveDataToFile(RES_PATH + "data.json");
+		saveDataToFile(RES_PATH + "data.json", data.toString());
 		notifyViews();
 	}
 
@@ -89,6 +89,9 @@ public class ChineseModel {
 
 	// You can always change an implementation, right?
 	private String readFromDataFile(String fileName) {
+		/* UNCOMMENT NEXT LINES IF YOU WANT TO SET INPUT MANUALLY FROM CODE */
+		// saveDataToFile(RES_PATH + "data.json", "YOUR DATA STRING HERE");
+
 		String result = null;
 
 		try {
@@ -107,11 +110,11 @@ public class ChineseModel {
 		return result;
 	}
 
-	private void saveDataToFile(String fileName) {
+	private void saveDataToFile(String fileName, String data) {
 		try {
 			FileOutputStream fos = new FileOutputStream(fileName);
 			DataOutputStream dos = new DataOutputStream(fos);
-			dos.writeUTF(data.toString());
+			dos.writeUTF(data);
 			dos.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -121,7 +124,7 @@ public class ChineseModel {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private int getLastID() {
 		return ((JSONArray) data.get("entries")).size() - 1;
 	}

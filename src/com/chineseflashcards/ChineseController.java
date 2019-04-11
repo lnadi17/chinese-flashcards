@@ -17,6 +17,7 @@ public class ChineseController {
 
 	// Declare views
 	ChineseDataView dataView;
+	ChinesePracticeView practiceView;
 
 	// Declare variables which need tracking
 	/* (DATA VIEW VARIABLES) */
@@ -29,12 +30,15 @@ public class ChineseController {
 
 		// Initialize views
 		dataView = new ChineseDataView(model.getData());
+		practiceView = new ChinesePracticeView();
 
 		// Add views to model
 		model.addView(dataView);
+		model.addView(practiceView);
 
 		// Add views to main view as separate tabs
 		view.addTab("Data", dataView);
+		view.addTab("Practice", practiceView);
 
 		// Add action listeners to dataView buttons
 		dataView.addButtonListeners(new DataViewButtonsListener());
@@ -44,6 +48,9 @@ public class ChineseController {
 
 		// Add selection listener to table in data view
 		dataView.addSelectionListener(new DataViewTableSelectionListener());
+
+		// Add action listeners to practiceView buttons
+		practiceView.addButtonListeners(new PracticeViewButtonsListener());
 	}
 
 	// Listens to Add, Remove and Edit buttons in data view
@@ -53,20 +60,20 @@ public class ChineseController {
 			if (e.getActionCommand() == "Add") {
 				// Adds empty row
 				model.addEntry(new String[] { "", "", "" });
-				
+
 			} else if (e.getActionCommand() == "Remove") {
 				// If no rows are selected, ask user to select them
 				if (dataViewSelectedRows == null) {
 					InfoClass.infoBox("Please select at least one row to remove.");
 					return;
 				}
-				
+
 				// Looping backwards to avoid error
 				for (int i = dataViewSelectedRows.size() - 1; i >= 0; i--) {
 					// Remove every selected row
 					model.removeEntry(dataViewSelectedRows.get(i));
 				}
-				
+
 				// Forces user to select rows if they want to use remove button again
 				clearRowSelection();
 			}
@@ -75,7 +82,6 @@ public class ChineseController {
 
 	// Listens to table model in data view
 	private class DataViewTableModelListener implements TableModelListener {
-		@Override
 		public void tableChanged(TableModelEvent e) {
 			MyTableModel changedModel = (MyTableModel) e.getSource();
 			int changedRow = e.getLastRow();
@@ -88,7 +94,6 @@ public class ChineseController {
 
 	// Listens to table selections in data view
 	private class DataViewTableSelectionListener implements ListSelectionListener {
-		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			if (e.getValueIsAdjusting() == false) {
 				lastListSelectionModel = ((DefaultListSelectionModel) e.getSource());
@@ -101,11 +106,11 @@ public class ChineseController {
 		private ArrayList<Integer> parsedataViewSelectedRows(String str) {
 			// You're not supposed to get this
 			String[] answerStr = str.substring(str.lastIndexOf('{') + 1, str.lastIndexOf('}')).split(", ");
-			
+
 			// Return null if no rows are selected
 			if (answerStr[0].equals(""))
 				return null;
-			
+
 			return stringArrayToIntArray(answerStr);
 		}
 
@@ -119,6 +124,19 @@ public class ChineseController {
 				i++;
 			}
 			return intArray;
+		}
+	}
+
+	private class PracticeViewButtonsListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (e.getActionCommand() == "Reveal" || e.getActionCommand() == "Unreveal") {
+				practiceView.toggleRevealButton();
+				practiceView.turnCurrentCard();
+			} else if (e.getActionCommand() == "Next") {
+				practiceView.nextCard();
+			} else if (e.getActionCommand() == "Prev") {
+				practiceView.prevCard();
+			}
 		}
 	}
 
