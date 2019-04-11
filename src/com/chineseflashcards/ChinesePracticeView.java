@@ -84,7 +84,7 @@ public class ChinesePracticeView extends ChineseView {
 	// Following methods have much in common,
 	// but separating them is still reasonable
 	public void turnCurrentCard() {
-		// It peeks inside flashcards, gets single card and shows it's other side
+		// It peeks inside flashcards, gets single card and shows it's another side
 		// (it only has two sides)
 		((CardLayout) ((JPanel) flashCards.getComponents()[currentCardIndex]).getLayout())
 				.next((Container) flashCards.getComponents()[currentCardIndex]);
@@ -113,17 +113,17 @@ public class ChinesePracticeView extends ChineseView {
 			ArrayList<String> aRow = new ArrayList<String>();
 
 			for (int j = 0; j < jRow.size(); j++) {
-
-				// Convert to pinyin here
-
-				aRow.add((String) jRow.get(j));
+				if (j == 1) {
+					aRow.add(ConverterClass.stringToPinyin((String) jRow.get(j)));
+				} else {
+					aRow.add((String) jRow.get(j));
+				}
 			}
 
 			// Here should be a checkpoint where it skips if the row is empty
 
 			this.data.add(aRow);
 		}
-		// System.out.println(this.data);
 	}
 
 	private void fillFlashCards(int[] questionIndexes, int[] answerIndexes) {
@@ -143,7 +143,7 @@ public class ChinesePracticeView extends ChineseView {
 			JLabel question = new JLabel(questionString, SwingConstants.CENTER);
 			JLabel answer = new JLabel(answerString, SwingConstants.CENTER);
 			question.setFont(new Font("Arial", Font.PLAIN, 40));
-			answer.setFont(new Font("Sylfaen", Font.PLAIN, 60));
+			answer.setFont(new Font("Arial", Font.PLAIN, 60));
 
 			JPanel singleCard = new JPanel(new CardLayout());
 			singleCard.add(question, "q");
