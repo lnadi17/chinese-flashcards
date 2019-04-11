@@ -129,12 +129,14 @@ public class ChineseController {
 
 	private class PracticeViewButtonsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand() == "Reveal" || e.getActionCommand() == "Unreveal") {
-				practiceView.toggleRevealButton();
+			if (e.getActionCommand() == "Turn") {
 				practiceView.turnCurrentCard();
 			} else if (e.getActionCommand() == "Next") {
+				// Turn card to question side before switching
+				practiceView.setQuestionSide();
 				practiceView.nextCard();
 			} else if (e.getActionCommand() == "Prev") {
+				practiceView.setQuestionSide();
 				practiceView.prevCard();
 			}
 		}

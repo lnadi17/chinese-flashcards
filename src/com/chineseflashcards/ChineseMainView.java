@@ -10,7 +10,7 @@ public class ChineseMainView extends JFrame {
 	public ChineseMainView() {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		// this.pack();
-		this.setSize(500, 500);
+		this.setSize(700, 500);
 		this.setVisible(true);
 		this.add(tabbedPane);
 	}

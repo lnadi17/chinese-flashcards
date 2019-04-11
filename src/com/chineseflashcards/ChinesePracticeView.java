@@ -24,17 +24,17 @@ public class ChinesePracticeView extends ChineseView {
 	JPanel flashCards;
 	CardLayout cardLayout;
 
-	JButton revealButton;
+	JButton turnButton;
 	JButton nextButton;
 	JButton prevButton;
-	
+
 	int currentCardIndex;
 
 	public ChinesePracticeView() {
 		this.setLayout(new BorderLayout());
-		revealButton = new JButton("Reveal");
-		nextButton = new JButton ("Next");
-		prevButton = new JButton ("Prev");
+		turnButton = new JButton("Turn");
+		nextButton = new JButton("Next");
+		prevButton = new JButton("Prev");
 	}
 
 	@Override
@@ -42,17 +42,17 @@ public class ChinesePracticeView extends ChineseView {
 		saveDataInArrayList(data);
 		cardLayout = new CardLayout();
 		flashCards = new JPanel(cardLayout);
-		
-		add(revealButton, BorderLayout.SOUTH);
+
+		add(turnButton, BorderLayout.SOUTH);
 		add(prevButton, BorderLayout.WEST);
 		add(nextButton, BorderLayout.EAST);
 
-		// These arrays won't be set manually in future, and their sizes must be 
+		// These arrays won't be set manually in future, and their sizes must be
 		// at least one
 		int[] questionIndexes = new int[] { 0 };
 		int[] answerIndexes = new int[] { 1, 2 };
 
-		fillFlashCards(questionIndexes, answerIndexes);	
+		fillFlashCards(questionIndexes, answerIndexes);
 		add(flashCards, BorderLayout.CENTER);
 		System.out.println(currentCardIndex);
 	}
@@ -72,24 +72,36 @@ public class ChinesePracticeView extends ChineseView {
 		cardLayout.previous(flashCards);
 		currentCardIndex = (currentCardIndex - 1 + data.size()) % data.size();
 	}
-	
-	public void toggleRevealButton() {
-		if (revealButton.getText().equals("Reveal")) {
-			revealButton.setText("Unreveal");
+
+	public void toggleturnButton() {
+		if (turnButton.getText().equals("Reveal")) {
+			turnButton.setText("Unreveal");
 		} else {
-			revealButton.setText("Reveal");
+			turnButton.setText("Reveal");
 		}
 	}
 
+	// Following methods have much in common,
+	// but separating them is still reasonable
 	public void turnCurrentCard() {
 		// It peeks inside flashcards, gets single card and shows it's other side
 		// (it only has two sides)
 		((CardLayout) ((JPanel) flashCards.getComponents()[currentCardIndex]).getLayout())
 				.next((Container) flashCards.getComponents()[currentCardIndex]);
 	}
-	
+
+	public void setQuestionSide() {
+		((CardLayout) ((JPanel) flashCards.getComponents()[currentCardIndex]).getLayout())
+				.show((Container) flashCards.getComponents()[currentCardIndex], "q");
+	}
+
+	public void setAnswerSide() {
+		((CardLayout) ((JPanel) flashCards.getComponents()[currentCardIndex]).getLayout())
+				.show((Container) flashCards.getComponents()[currentCardIndex], "a");
+	}
+
 	public void addButtonListeners(ActionListener a) {
-		revealButton.addActionListener(a);
+		turnButton.addActionListener(a);
 		prevButton.addActionListener(a);
 		nextButton.addActionListener(a);
 	}
@@ -101,9 +113,9 @@ public class ChinesePracticeView extends ChineseView {
 			ArrayList<String> aRow = new ArrayList<String>();
 
 			for (int j = 0; j < jRow.size(); j++) {
-				
+
 				// Convert to pinyin here
-				
+
 				aRow.add((String) jRow.get(j));
 			}
 
@@ -116,17 +128,17 @@ public class ChinesePracticeView extends ChineseView {
 
 	private void fillFlashCards(int[] questionIndexes, int[] answerIndexes) {
 		for (ArrayList<String> row : data) {
-			String questionString = "<html>";
+			String questionString = "<html><center>";
 			for (int q : questionIndexes) {
 				questionString += row.get(q) + "<br>";
 			}
-			questionString += "</html>";
+			questionString += "<center></html>";
 
-			String answerString = "<html>";
+			String answerString = "<html><center>";
 			for (int a : answerIndexes) {
 				answerString += row.get(a) + "<br>";
 			}
-			answerString += "</html>";
+			answerString += "</center></html>";
 
 			JLabel question = new JLabel(questionString, SwingConstants.CENTER);
 			JLabel answer = new JLabel(answerString, SwingConstants.CENTER);
@@ -134,8 +146,8 @@ public class ChinesePracticeView extends ChineseView {
 			answer.setFont(new Font("Sylfaen", Font.PLAIN, 60));
 
 			JPanel singleCard = new JPanel(new CardLayout());
-			singleCard.add(question);
-			singleCard.add(answer);
+			singleCard.add(question, "q");
+			singleCard.add(answer, "a");
 
 			flashCards.add(singleCard);
 		}
