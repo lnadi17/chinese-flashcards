@@ -6,7 +6,6 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,8 +32,8 @@ public class ChinesePracticeView extends ChineseView {
 	public ChinesePracticeView() {
 		this.setLayout(new BorderLayout());
 		turnButton = new JButton("Turn");
-		nextButton = new JButton("Next");
-		prevButton = new JButton("Prev");
+		nextButton = new JButton("Know");
+		prevButton = new JButton("Don't Know");
 	}
 
 	@Override
@@ -73,14 +72,6 @@ public class ChinesePracticeView extends ChineseView {
 		currentCardIndex = (currentCardIndex - 1 + data.size()) % data.size();
 	}
 
-	public void toggleturnButton() {
-		if (turnButton.getText().equals("Reveal")) {
-			turnButton.setText("Unreveal");
-		} else {
-			turnButton.setText("Reveal");
-		}
-	}
-
 	// Following methods have much in common,
 	// but separating them is still reasonable
 	public void turnCurrentCard() {
@@ -95,10 +86,10 @@ public class ChinesePracticeView extends ChineseView {
 				.show((Container) flashCards.getComponents()[currentCardIndex], "q");
 	}
 
-	public void setAnswerSide() {
-		((CardLayout) ((JPanel) flashCards.getComponents()[currentCardIndex]).getLayout())
-				.show((Container) flashCards.getComponents()[currentCardIndex], "a");
-	}
+//	public void setAnswerSide() {
+//		((CardLayout) ((JPanel) flashCards.getComponents()[currentCardIndex]).getLayout())
+//				.show((Container) flashCards.getComponents()[currentCardIndex], "a");
+//	}
 
 	public void addButtonListeners(ActionListener a) {
 		turnButton.addActionListener(a);
@@ -150,6 +141,20 @@ public class ChinesePracticeView extends ChineseView {
 			singleCard.add(answer, "a");
 
 			flashCards.add(singleCard);
+		}
+	}
+
+	// TEMPORARY METHOD BELOW
+	public void removePrevious() {
+		int prevIndex = (currentCardIndex - 1 + data.size()) % data.size();
+		data.remove(prevIndex);
+		flashCards.remove(flashCards.getComponent(prevIndex));
+		if (currentCardIndex > prevIndex)
+			currentCardIndex = prevIndex;
+		// If data size is 0 (which happens when user has guessed all the cards),
+		// panic and shut down
+		if (data.size() == 0) {
+			System.exit(0);
 		}
 	}
 }

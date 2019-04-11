@@ -131,13 +131,19 @@ public class ChineseController {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand() == "Turn") {
 				practiceView.turnCurrentCard();
-			} else if (e.getActionCommand() == "Next") {
-				// Turn card to question side before switching
+			} else {
 				practiceView.setQuestionSide();
 				practiceView.nextCard();
-			} else if (e.getActionCommand() == "Prev") {
-				practiceView.setQuestionSide();
-				practiceView.prevCard();
+				
+				if (e.getActionCommand() == "Know") {
+					// TEMPORARY METHOD BELOW
+					practiceView.removePrevious();
+				}
+				
+				if (e.getActionCommand() == "Don't Know") {
+					// Turn card to question side before switching
+					
+				}
 			}
 		}
 	}
