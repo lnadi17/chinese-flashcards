@@ -5,6 +5,12 @@ and the software itself helped me learn during the Chinese course. There are two
 Data view allows the user to add custom words to the database, change or remove them. Practice view shows user all these flashards created 
 from these words in random order, until the user correctly answers all of them, after which the program exits.
 
+<div>
+  <img src="data_view.png" alt="Screenshot 1" width="300" />
+  <img src="practice_view.png" alt="Screenshot 3" width="300" />
+  <img src="data_view_2.png" alt="Screenshot 2" width="300" />
+</div>
+
 ## Installation
 
 Program needs [Java (JRE)](https://www.java.com/en/download/) to run, no extra installation step is needed. Program release comes with the `res` folder, which contains `data.json`,
