@@ -7,7 +7,6 @@ from these words in random order, until the user correctly answers all of them, 
 
 <div>
   <img src="data_view.png" alt="Screenshot 1" width="300" />
-  <img src="practice_view.png" alt="Screenshot 3" width="300" />
   <img src="data_view_2.png" alt="Screenshot 2" width="300" />
 </div>
 
@@ -19,4 +18,8 @@ Program needs [Java (JRE)](https://www.java.com/en/download/) to run, no extra i
 
 ## Usage
 
-The program needs some explanation before the user can fully use it.
+### Practice View
+If you want to use just the practice view, then you must open the practice tab, and take a guess about the chinese pronounciation and writing of the presented word. You can turn the card to reveal the answer when you are ready. After this, click "Don't Know" if you didn't know an answer or "Know" if you did. The program will always show you the next unanswered question until you answer "Know" on all of them, after which the program exits.
+
+### Data View
+If you want to add your own data to the program, you must open the data tab. From there, you can click on a row to edit it, or you can add/remove rows with the presented buttons. `განმარტება` column contains translation for the Chinese word/phrase, `Pinyin` for Pinyin pronounciation and `汉字` for corresponding hieroglyphs. To write tones in Pinyin, you must write 1, 2, 3 or 4 after the wovel. If you want to get the **"ü"** character, you must write **"v"**. There are examples given in the "Data View" screenshot above. 
